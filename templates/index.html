@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Color Detection Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rubik:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <nav class="site-header" aria-label="Project navigation">
+            <div class="site-header-inner">
+                <a class="brand-lockup" href="/" aria-label="Go to home">
+                    <span class="brand-primary">Color</span>
+                    <span class="brand-accent">Detection</span>
+                    <span class="brand-primary">Studio</span>
+                </a>
+
+                <div class="header-actions">
+                    <a class="header-icon-link" id="header-github-link" href="https://github.com/lalankumar17/Color-Detection" target="_blank" rel="noreferrer" aria-label="GitHub repository">
+                        <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                            <path d="M12 .5A12 12 0 0 0 8.2 23.9c.6.1.82-.26.82-.58v-2.05c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.34-1.75-1.34-1.75-1.1-.75.08-.74.08-.74 1.21.09 1.85 1.25 1.85 1.25 1.08 1.84 2.84 1.31 3.53 1 .11-.79.42-1.31.76-1.61-2.67-.3-5.48-1.33-5.48-5.94 0-1.31.47-2.39 1.24-3.24-.13-.3-.54-1.52.12-3.17 0 0 1-.32 3.3 1.24a11.43 11.43 0 0 1 6 0c2.29-1.56 3.29-1.24 3.29-1.24.66 1.65.25 2.87.12 3.17.77.85 1.24 1.93 1.24 3.24 0 4.62-2.82 5.63-5.5 5.93.43.37.82 1.1.82 2.22v3.29c0 .32.21.69.83.57A12 12 0 0 0 12 .5Z"/>
+                        </svg>
+                        <span>GitHub</span>
+                    </a>
+
+                    <button class="header-icon-button" id="settings-toggle" type="button" aria-label="Open mode settings" aria-expanded="false" aria-controls="settings-panel">
+                        <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                            <path d="M4.5 12a7.5 7.5 0 0 1 .123-1.35L3.18 9.524a.75.75 0 0 1-.202-.94l1.368-2.37a.75.75 0 0 1 .9-.345l1.71.684a7.498 7.498 0 0 1 2.337-1.35l.259-1.79A.75.75 0 0 1 10.294 2h3.412a.75.75 0 0 1 .742.644l.259 1.79a7.498 7.498 0 0 1 2.337 1.35l1.71-.684a.75.75 0 0 1 .9.345l1.368 2.37a.75.75 0 0 1-.202.94l-1.443 1.126c.08.442.123.891.123 1.35s-.042.908-.123 1.35l1.443 1.126a.75.75 0 0 1 .202.94l-1.368 2.37a.75.75 0 0 1-.9.345l-1.71-.684a7.498 7.498 0 0 1-2.337 1.35l-.259 1.79a.75.75 0 0 1-.742.644h-3.412a.75.75 0 0 1-.742-.644l-.259-1.79a7.498 7.498 0 0 1-2.337-1.35l-1.71.684a.75.75 0 0 1-.9-.345l-1.368-2.37a.75.75 0 0 1 .202-.94l1.443-1.126A7.5 7.5 0 0 1 4.5 12Z"/>
+                            <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                        </svg>
+                        <span>Settings</span>
+                    </button>
+
+                    <div class="header-settings-panel" id="settings-panel" hidden>
+                        <div class="settings-panel-head">
+                            <h3>Training &amp; Testing</h3>
+                        </div>
+
+                        <div class="settings-mode-list">
+                            <div class="settings-mode-item">
+                                <div class="settings-mode-meta">
+                                    <span>Training Split</span>
+                                    <strong id="training-share-value">--</strong>
+                                </div>
+                                <div class="settings-mode-bar">
+                                    <span class="settings-mode-fill is-training" id="training-share-bar" style="width: 0%;"></span>
+                                </div>
+                            </div>
+
+                            <div class="settings-mode-item">
+                                <div class="settings-mode-meta">
+                                    <span>Testing Split</span>
+                                    <strong id="testing-share-value">--</strong>
+                                </div>
+                                <div class="settings-mode-bar">
+                                    <span class="settings-mode-fill is-testing" id="testing-share-bar" style="width: 0%;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-metric-group">
+                            <p class="settings-group-title">Model Accuracy</p>
+                            <div class="settings-model-list" id="settings-model-list">
+                                <p class="settings-panel-empty">Model accuracy details will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="bg-orb bg-orb-one" aria-hidden="true"></div>
+        <div class="bg-orb bg-orb-two" aria-hidden="true"></div>
+
+        <main class="app-frame">
+            <section class="workspace-grid">
+                <section class="panel workspace-panel">
+                    <div class="upload-strip">
+                        <div class="upload-strip-title">
+                            <span class="upload-strip-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" role="presentation" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="4" width="16" height="16" rx="3"></rect>
+                                    <circle cx="9" cy="9" r="1.4"></circle>
+                                    <path d="m20 15-4.5-4.5L7 19"></path>
+                                </svg>
+                            </span>
+                            <span>Upload Photos</span>
+                        </div>
+                        <span class="upload-strip-line" aria-hidden="true"></span>
+                        <button class="ghost-button" id="reset-button" type="button">Reset</button>
+                    </div>
+
+                    <label class="upload-dropzone" id="dropzone" for="image-upload">
+                        <input id="image-upload" type="file" accept="image/png,image/jpeg,image/webp,image/bmp,image/gif">
+                        <div class="upload-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" role="presentation" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="3" width="16" height="11" rx="3"></rect>
+                                <path d="M12 10V18"></path>
+                                <path d="m9.5 12.5 2.5-2.5 2.5 2.5"></path>
+                                <path d="M9 21h6"></path>
+                            </svg>
+                        </div>
+                        <div class="upload-copy">
+                            <strong>Drag &amp; Drop or Click to Upload</strong>
+                            <span>One image supported &bull; JPG, PNG, WEBP, BMP, GIF</span>
+                        </div>
+                    </label>
+
+                    <div class="file-meta" id="file-meta">No image selected yet.</div>
+
+                    <div class="canvas-stage is-empty" id="canvas-stage">
+                        <div class="canvas-empty" id="canvas-empty">
+                            <div class="canvas-empty-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" role="presentation" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"></rect>
+                                    <path d="m8 14 2.8-2.8a1 1 0 0 1 1.4 0L15 14"></path>
+                                    <path d="m13.5 12.5 1.3-1.3a1 1 0 0 1 1.4 0L19 14"></path>
+                                    <circle cx="8.5" cy="9" r="1.1"></circle>
+                                </svg>
+                            </div>
+                            <h3>Image Preview</h3>
+                            <p>Upload an image, then click any area to inspect its color.</p>
+                        </div>
+                        <div class="canvas-scroll" id="canvas-scroll">
+                            <canvas id="image-canvas" aria-label="Uploaded image preview" tabindex="0"></canvas>
+                        </div>
+                    </div>
+
+                    <p class="helper-copy" id="helper-copy">
+                        Upload an image to begin. After that, click on the image preview to sample a color.
+                    </p>
+                </section>
+
+                <aside class="panel insights-panel">
+                    <section class="dataset-total-card" aria-label="Dataset row count">
+                        <div class="dataset-total-copy">
+                            <p class="dataset-total-label">Live Dataset Rows</p>
+                            <strong class="dataset-total-value" id="dataset-total-value">--</strong>
+                            <p class="dataset-total-caption">Updates automatically from <code>color.csv</code>.</p>
+                        </div>
+
+                        <div class="dataset-total-bars" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </section>
+
+                    <section class="note-card">
+                        <p class="note-title">Dataset Note</p>
+                        <p class="note-copy">
+                            Values come from <code>color.csv</code>. Exact match first, closest match if needed.
+                        </p>
+                    </section>
+
+                    <section class="swatch-card">
+                        <div class="swatch-stack">
+                            <div class="swatch primary" id="primary-swatch"></div>
+                        </div>
+
+                        <div class="swatch-copy">
+                            <div class="swatch-headline">
+                                <div class="swatch-title-block">
+                                    <h3 id="color-name" class="is-placeholder">Awaiting Selection</h3>
+                                </div>
+                            </div>
+
+                            <div class="swatch-summary-grid">
+                                <article class="swatch-summary-card">
+                                    <span class="swatch-summary-label">CSV Row</span>
+                                    <strong class="swatch-summary-value" id="dataset-row-value">--</strong>
+                                </article>
+
+                                <article class="swatch-summary-card">
+                                    <span class="swatch-summary-label">HEX</span>
+                                    <strong class="swatch-summary-value" id="sample-hex-value">--</strong>
+                                </article>
+                            </div>
+
+                            <p id="sample-status">Your clicked pixel details will appear here as soon as you sample the image.</p>
+                        </div>
+                    </section>
+
+                    <section class="precision-toolbar" aria-label="Precision controls">
+                        <div class="precision-control">
+                            <label for="zoom-range">Zoom</label>
+                            <input id="zoom-range" type="range" min="1" max="10" step="0.25" value="1">
+                            <span class="precision-value" id="zoom-value">1x</span>
+                        </div>
+                    </section>
+
+                    <section class="metric-grid" aria-label="Color details">
+                        <article class="metric-card">
+                            <span class="metric-label">Red</span>
+                            <strong class="metric-value" id="dataset-red-value">--</strong>
+                        </article>
+
+                        <article class="metric-card">
+                            <span class="metric-label">Green</span>
+                            <strong class="metric-value" id="dataset-green-value">--</strong>
+                        </article>
+
+                        <article class="metric-card">
+                            <span class="metric-label">Blue</span>
+                            <strong class="metric-value" id="dataset-blue-value">--</strong>
+                        </article>
+                    </section>
+
+                    <p class="metric-note">Matched dataset RGB for this selection.</p>
+
+                </aside>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="site-footer-inner">
+                <div class="footer-spacer" aria-hidden="true"></div>
+
+                <p class="footer-copy">&copy; 2026 Lalan Kumar. All rights reserved.</p>
+
+                <div class="footer-social" aria-label="Social links">
+                    <a class="social-link" href="https://www.linkedin.com/in/lalan-mahato" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                            <path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2 2 0 1 0 5.3 7a2 2 0 0 0-.05-4ZM20.44 12.64c0-3.46-1.85-5.07-4.32-5.07a3.73 3.73 0 0 0-3.37 1.86V8.5H9.38V20h3.37v-6.18c0-1.63.31-3.2 2.33-3.2 1.99 0 2.01 1.86 2.01 3.31V20h3.35v-7.36Z"/>
+                        </svg>
+                    </a>
+
+                    <a class="social-link" href="https://github.com/lalankumar17" target="_blank" rel="noreferrer" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                            <path d="M12 .5A12 12 0 0 0 8.2 23.9c.6.1.82-.26.82-.58v-2.05c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.34-1.75-1.34-1.75-1.1-.75.08-.74.08-.74 1.21.09 1.85 1.25 1.85 1.25 1.08 1.84 2.84 1.31 3.53 1 .11-.79.42-1.31.76-1.61-2.67-.3-5.48-1.33-5.48-5.94 0-1.31.47-2.39 1.24-3.24-.13-.3-.54-1.52.12-3.17 0 0 1-.32 3.3 1.24a11.43 11.43 0 0 1 6 0c2.29-1.56 3.29-1.24 3.29-1.24.66 1.65.25 2.87.12 3.17.77.85 1.24 1.93 1.24 3.24 0 4.62-2.82 5.63-5.5 5.93.43.37.82 1.1.82 2.22v3.29c0 .32.21.69.83.57A12 12 0 0 0 12 .5Z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
